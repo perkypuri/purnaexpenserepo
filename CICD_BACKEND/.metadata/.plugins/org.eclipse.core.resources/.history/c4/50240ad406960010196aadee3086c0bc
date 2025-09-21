@@ -1,0 +1,38 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.SupervisorRequest;
+import com.example.demo.service.SupervisorRequestService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/supervisorRequests")
+@CrossOrigin(origins = "http://localhost:3000")
+public class SupervisorRequestController {
+
+    private final SupervisorRequestService service;
+
+    public SupervisorRequestController(SupervisorRequestService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/send")
+    public SupervisorRequest sendRequest(@RequestBody SupervisorRequest request) {
+        return service.sendRequest(request);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<SupervisorRequest> getRequestsByUser(@PathVariable("userId") int userId) {
+        return service.getRequestsByUser(userId);
+    }
+
+    @GetMapping("/supervisor/{supervisorId}")
+    public List<SupervisorRequest> getRequestsBySupervisor(@PathVariable("supervisorId") int supervisorId) {
+        return service.getRequestsBySupervisor(supervisorId);
+    }
+
+    @PutMapping("/updateStatus/{id}")
+    public SupervisorRequest updateStatus(@PathVariable("id") int id, @RequestParam("status") String status) {
+        return service.updateStatus(id, status);
+    }
+}
