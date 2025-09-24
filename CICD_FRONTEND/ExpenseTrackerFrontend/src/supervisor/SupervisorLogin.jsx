@@ -15,31 +15,105 @@ export default function SupervisorLogin() {
     setError("");
 
     try {
-      const res = await axios.post(`/supervisors/login`, null, {
-        params: { email, password },
-      });
+      const res = await axios.post(
+        `http://localhost:2006/supervisors/login`,
+        null,
+        { params: { email, password } }
+      );
+
       localStorage.setItem("supervisor", JSON.stringify(res.data));
       setIsSupervisorLoggedIn(true);
       navigate("/supervisor/dashboard");
     } catch (err) {
-      setError("Invalid email or password");
+      setError(err.response?.data?.message || "Invalid email or password");
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Supervisor Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#ffe5e3",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "#FFB1AC",
+          padding: "40px",
+          borderRadius: "15px",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+          width: "350px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <h2 style={{ textAlign: "center", color: "#fff" }}>Supervisor Login</h2>
+        {error && (
+          <p
+            style={{
+              color: "#fff",
+              background: "rgba(255, 0, 0, 0.6)",
+              padding: "8px",
+              borderRadius: "8px",
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </p>
+        )}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#fff" }}>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "none",
+              outline: "none",
+            }}
+          />
         </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#fff" }}>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "none",
+              outline: "none",
+            }}
+          />
         </div>
-        <button type="submit">Login</button>
+        <button
+          type="submit"
+          style={{
+            padding: "12px",
+            borderRadius: "8px",
+            border: "none",
+            backgroundColor: "#fff",
+            color: "#FFB1AC",
+            fontWeight: "bold",
+            cursor: "pointer",
+            transition: "0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#ffd0cb")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#fff")}
+        >
+          Login
+        </button>
       </form>
     </div>
   );

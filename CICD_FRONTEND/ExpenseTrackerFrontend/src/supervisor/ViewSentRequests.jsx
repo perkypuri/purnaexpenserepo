@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import config from "../config"; // Make sure config has your backend URL
 
 export default function ViewSentRequests() {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const supervisor = JSON.parse(localStorage.getItem("supervisor"));
 
   useEffect(() => {
@@ -11,34 +13,82 @@ export default function ViewSentRequests() {
 
   const fetchSentRequests = async () => {
     try {
-      const res = await axios.get(`/supervisorRequests/supervisor/${supervisor.id}`);
-      setRequests(res.data || []);
+      const res = await axios.get(`${config.url}/supervisorRequests/supervisor/${supervisor.id}`);
+      setRequests(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Failed to fetch sent requests", err);
       setRequests([]);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const styles = {
+    container: {
+      padding: "20px",
+      maxWidth: "800px",
+      margin: "40px auto",
+      backgroundColor: "#fff5f0",
+      borderRadius: "12px",
+      boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
+      fontFamily: "Arial, sans-serif",
+    },
+    title: {
+      textAlign: "center",
+      marginBottom: "20px",
+      color: "#ff6f61", // coral
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+    },
+    th: {
+      backgroundColor: "#ff7f50", // coral
+      color: "#fff",
+      padding: "12px",
+      textAlign: "left",
+    },
+    td: {
+      padding: "10px",
+      borderBottom: "1px solid #ffd1c1", // soft coral line
+    },
+    trHover: {
+      backgroundColor: "#ffe4e1", // very soft coral on hover
+    },
+    noRequests: {
+      textAlign: "center",
+      color: "#ff6f61",
+      fontWeight: "bold",
+    },
+  };
+
+  if (loading) return <p style={{ textAlign: "center" }}>Loading sent requests...</p>;
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Sent Requests</h2>
+    <div style={styles.container}>
+      <h2 style={styles.title}>Sent Requests</h2>
       {requests.length === 0 ? (
-        <p>No sent requests.</p>
+        <p style={styles.noRequests}>No sent requests.</p>
       ) : (
-        <table border="1" cellPadding="8">
+        <table style={styles.table}>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>User ID</th>
-              <th>Status</th>
+              <th style={styles.th}>ID</th>
+              <th style={styles.th}>User ID</th>
+              <th style={styles.th}>Status</th>
             </tr>
           </thead>
           <tbody>
             {requests.map((req) => (
-              <tr key={req.id}>
-                <td>{req.id}</td>
-                <td>{req.user.id}</td>
-                <td>{req.status}</td>
+              <tr
+                key={req.id}
+                style={{ cursor: "pointer" }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#ffe4e1")}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+              >
+                <td style={styles.td}>{req.id}</td>
+                <td style={styles.td}>{req.user?.id}</td>
+                <td style={styles.td}>{req.status}</td>
               </tr>
             ))}
           </tbody>

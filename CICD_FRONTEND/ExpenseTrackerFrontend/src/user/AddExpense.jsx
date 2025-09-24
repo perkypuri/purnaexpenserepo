@@ -39,7 +39,7 @@ export default function AddExpense() {
         setMessage(response.data);
         setError("");
         setTimeout(() => {
-          navigate("/userdashboard");
+          navigate("/user/dashboard");
         }, 1000);
       }
     } catch (err) {
@@ -56,82 +56,124 @@ export default function AddExpense() {
   return (
     <div
       style={{
-        maxWidth: "450px",
-        margin: "40px auto",
-        padding: "25px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-        backgroundColor: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        background: "#ffeaea",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        padding: "20px",
       }}
     >
-      <h3 style={{ textAlign: "center", textDecoration: "underline", marginBottom: "20px" }}>
-        Add Expense
-      </h3>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "#fff",
+          borderRadius: "15px",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+          padding: "35px 30px",
+          width: "400px",
+          display: "flex",
+          flexDirection: "column",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        }}
+      >
+        <h3
+          style={{
+            color: "#FFB1AC",
+            textAlign: "center",
+            marginBottom: "25px",
+            fontSize: "26px",
+            textDecoration: "underline",
+          }}
+        >
+          Add Expense
+        </h3>
 
-      {message && <p style={{ color: "green", textAlign: "center" }}>{message}</p>}
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+        {message && (
+          <p style={{ color: "green", textAlign: "center", marginBottom: "15px" }}>{message}</p>
+        )}
+        {error && (
+          <p style={{ color: "red", textAlign: "center", marginBottom: "15px" }}>{error}</p>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Category</label>
-          <input
-            type="text"
-            id="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-            style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-          />
-        </div>
+        {/* Form Fields */}
+        {["category", "amount", "date"].map((field) => (
+          <div
+            key={field}
+            style={{ marginBottom: "18px", display: "flex", flexDirection: "column" }}
+          >
+            <label
+              htmlFor={field}
+              style={{ marginBottom: "5px", fontWeight: "600", color: "#333", fontSize: "14px" }}
+            >
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </label>
+            <input
+              type={field === "amount" ? "number" : field === "date" ? "date" : "text"}
+              id={field}
+              value={formData[field]}
+              onChange={handleChange}
+              required
+              min={field === "amount" ? "0" : undefined}
+              style={{
+                width: "100%",
+                padding: "10px 15px",
+                borderRadius: "8px",
+                border: "1px solid #FFB1AC",
+                outline: "none",
+                fontSize: "14px",
+                textAlign: "center", // <-- center text here
+                transition: "all 0.3s ease",
+              }}
+            />
+          </div>
+        ))}
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Amount</label>
-          <input
-            type="number"
-            id="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            required
-            min="0"
-            style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <label>Date</label>
-          <input
-            type="date"
-            id="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-            style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <label>Description</label>
+        {/* Description */}
+        <div style={{ marginBottom: "20px", display: "flex", flexDirection: "column" }}>
+          <label
+            htmlFor="description"
+            style={{ marginBottom: "5px", fontWeight: "600", color: "#333", fontSize: "14px" }}
+          >
+            Description
+          </label>
           <textarea
             id="description"
             value={formData.description}
             onChange={handleChange}
-            style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc", minHeight: "60px" }}
+            style={{
+              width: "100%",
+              padding: "10px 15px",
+              borderRadius: "8px",
+              border: "1px solid #FFB1AC",
+              outline: "none",
+              fontSize: "14px",
+              minHeight: "70px",
+              textAlign: "center", // <-- center text here
+              transition: "all 0.3s ease",
+            }}
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
           style={{
             width: "100%",
-            padding: "10px",
-            borderRadius: "5px",
+            padding: "12px",
+            borderRadius: "8px",
             border: "none",
-            backgroundColor: "#007bff",
+            backgroundColor: "#FFB1AC",
             color: "#fff",
+            fontSize: "16px",
+            fontWeight: "600",
             cursor: loading ? "not-allowed" : "pointer",
+            transition: "background 0.3s ease",
           }}
+          onMouseOver={(e) => (e.currentTarget.style.background = "#ff7f7f")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "#FFB1AC")}
         >
           {loading ? "Please wait..." : "Add Expense"}
         </button>

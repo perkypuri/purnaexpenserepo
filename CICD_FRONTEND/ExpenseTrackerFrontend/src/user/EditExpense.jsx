@@ -29,17 +29,30 @@ export default function EditExpense() {
     }
 
     if (expenseFromState) {
-      setFormData({ ...expenseFromState });
+      setFormData({
+        category: String(expenseFromState.category || ""),
+        amount: String(expenseFromState.amount || ""),
+        date: String(expenseFromState.date || ""),
+        description: String(expenseFromState.description || ""),
+      });
       setLoading(false);
     } else {
-      // Fetch from backend if state not available (refresh-safe)
       axios
         .get(`${config.url}/expenses/${id}`)
-        .then((res) => setFormData(res.data))
+        .then((res) =>
+          setFormData({
+            category: String(res.data.category || ""),
+            amount: String(res.data.amount || ""),
+            date: String(res.data.date || ""),
+            description: String(res.data.description || ""),
+          })
+        )
         .catch(() => setError("Failed to load expense"))
         .finally(() => setLoading(false));
     }
-  }, [id, expenseFromState, navigate, user]);
+    // Only run on mount or id change to avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,46 +66,141 @@ export default function EditExpense() {
     setMessage("");
 
     try {
-      await axios.put(`${config.url}/expenses/update/${id}`, { ...formData, user: { id: user.id } });
+      // ✅ Match backend expectation: ID in body, no ID in URL
+      await axios.put(`${config.url}/expenses/update`, { 
+        id: id,
+        ...formData, 
+        user: { id: user.id } 
+      });
       setMessage("Expense updated successfully!");
-      setTimeout(() => navigate("/viewexpenses"), 1000);
-    } catch {
+      setTimeout(() => navigate("/user/viewexpenses"), 1000);
+    } catch (err) {
       setError("Failed to update expense");
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>;
+  if (loading)
+    return <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>;
+
+  const styles = {
+    container: {
+      maxWidth: "500px",
+      margin: "50px auto",
+      padding: "30px",
+      backgroundColor: "#FFB1AC",
+      borderRadius: "12px",
+      boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+      fontFamily: "Arial, sans-serif",
+    },
+    heading: {
+      textAlign: "center",
+      fontSize: "28px",
+      fontWeight: "bold",
+      marginBottom: "25px",
+      color: "#fff",
+      textDecoration: "underline",
+    },
+    label: {
+      display: "block",
+      marginBottom: "5px",
+      fontWeight: "bold",
+      color: "#333",
+    },
+    input: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      marginBottom: "20px",
+      fontSize: "16px",
+      textAlign: "center",
+    },
+    textarea: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      minHeight: "80px",
+      fontSize: "16px",
+      marginBottom: "20px",
+      resize: "vertical",
+      textAlign: "center",
+    },
+    button: {
+      width: "100%",
+      padding: "12px",
+      borderRadius: "8px",
+      border: "none",
+      fontSize: "16px",
+      fontWeight: "bold",
+      cursor: saving ? "not-allowed" : "pointer",
+      backgroundColor: "#ff6f61",
+      color: "#fff",
+      transition: "0.3s",
+    },
+    message: {
+      textAlign: "center",
+      fontWeight: "bold",
+      marginBottom: "15px",
+      color: "green",
+    },
+    error: {
+      textAlign: "center",
+      fontWeight: "bold",
+      marginBottom: "15px",
+      color: "red",
+    },
+  };
 
   return (
-    <div style={{ maxWidth: "450px", margin: "40px auto", padding: "25px", border: "1px solid #ddd", borderRadius: "10px", boxShadow: "0 4px 15px rgba(0,0,0,0.1)", backgroundColor: "#fff" }}>
-      <h3 style={{ textAlign: "center", textDecoration: "underline", marginBottom: "20px" }}>Edit Expense</h3>
-      {message && <p style={{ color: "green", textAlign: "center" }}>{message}</p>}
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+    <div style={styles.container}>
+      <h3 style={styles.heading}>Edit Expense</h3>
+      {message && <p style={styles.message}>{message}</p>}
+      {error && <p style={styles.error}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Category</label>
-          <input type="text" name="category" value={formData.category} onChange={handleChange} required style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-        </div>
+        <label style={styles.label}>Category</label>
+        <input
+          type="text"
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          required
+          style={styles.input}
+        />
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Amount</label>
-          <input type="number" name="amount" value={formData.amount} onChange={handleChange} required min="0" style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-        </div>
+        <label style={styles.label}>Amount</label>
+        <input
+          type="text"
+          inputMode="numeric"
+          name="amount"
+          value={formData.amount}
+          onChange={handleChange}
+          required
+          style={styles.input}
+        />
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Date</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-        </div>
+        <label style={styles.label}>Date</label>
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+          style={styles.input}
+        />
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Description</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc", minHeight: "60px" }} />
-        </div>
+        <label style={styles.label}>Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          style={styles.textarea}
+        />
 
-        <button type="submit" disabled={saving} style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "none", backgroundColor: "#007bff", color: "#fff", cursor: saving ? "not-allowed" : "pointer" }}>
+        <button type="submit" style={styles.button} disabled={saving}>
           {saving ? "Saving..." : "Update Expense"}
         </button>
       </form>

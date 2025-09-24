@@ -1,14 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import config from "../config";
-import "./UserDashboard.css";
 
 export default function UserRegistration() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    mobile: ""
+    mobile: "",
   });
 
   const [message, setMessage] = useState("");
@@ -29,7 +28,7 @@ export default function UserRegistration() {
           name: "",
           email: "",
           password: "",
-          mobile: ""
+          mobile: "",
         });
       }
     } catch (err) {
@@ -44,55 +43,136 @@ export default function UserRegistration() {
   };
 
   return (
-    <div>
-      <h3 style={{ textAlign: "center", textDecoration: "underline" }}>User Registration</h3>
-      {message ? (
-        <p style={{ textAlign: "center", color: "green", fontWeight: "bolder" }}>{message}</p>
-      ) : (
-        <p style={{ textAlign: "center", color: "red", fontWeight: "bolder" }}>{error}</p>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Full Name</label>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#ffe5e3",
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "#fff",
+          padding: "40px",
+          borderRadius: "15px",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+          width: "400px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <h3
+          style={{
+            textAlign: "center",
+            color: "#FFB1AC",
+            marginBottom: "10px",
+          }}
+        >
+          User Registration
+        </h3>
+
+        {message && (
+          <p style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>
+            {message}
+          </p>
+        )}
+        {error && !message && (
+          <p style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
+            {error}
+          </p>
+        )}
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#555" }}>Full Name</label>
           <input
             type="text"
             id="name"
             value={formData.name}
             onChange={handleChange}
             required
+            style={{
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              outline: "none",
+            }}
           />
         </div>
-        <div>
-          <label>Email</label>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#555" }}>Email</label>
           <input
             type="email"
             id="email"
             value={formData.email}
             onChange={handleChange}
             required
+            style={{
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              outline: "none",
+            }}
           />
         </div>
-        <div>
-          <label>Password</label>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#555" }}>Password</label>
           <input
             type="password"
             id="password"
             value={formData.password}
             onChange={handleChange}
             required
+            style={{
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              outline: "none",
+            }}
           />
         </div>
-        <div>
-          <label>Mobile</label>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#555" }}>Mobile</label>
           <input
             type="text"
             id="mobile"
             value={formData.mobile}
             onChange={handleChange}
             required
+            style={{
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              outline: "none",
+            }}
           />
         </div>
-        <button type="submit">Register</button>
+
+        <button
+          type="submit"
+          style={{
+            padding: "12px",
+            borderRadius: "8px",
+            border: "none",
+            backgroundColor: "#FFB1AC",
+            color: "#fff",
+            fontWeight: "bold",
+            cursor: "pointer",
+            transition: "0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#ff8f85")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#FFB1AC")}
+        >
+          Register
+        </button>
       </form>
     </div>
   );

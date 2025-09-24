@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../config";
-import "./UserDashboard.css";
 
 export default function UserRequests() {
   const [requests, setRequests] = useState([]);
@@ -9,11 +8,8 @@ export default function UserRequests() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    if (user) {
-      fetchRequests();
-    } else {
-      setError("User not logged in.");
-    }
+    if (user) fetchRequests();
+    else setError("User not logged in.");
   }, []);
 
   const fetchRequests = async () => {
@@ -21,7 +17,7 @@ export default function UserRequests() {
       const response = await axios.get(
         `${config.url}/supervisorRequests/user/${user.id}`
       );
-      setRequests(response.data);
+      setRequests(response.data || []);
       setError("");
     } catch {
       setError("Failed to fetch requests");
@@ -42,55 +38,122 @@ export default function UserRequests() {
     }
   };
 
-  return (
-    <div className="requests-container">
-      <h3 className="requests-heading">Supervisor Requests</h3>
+  const styles = {
+    container: {
+      maxWidth: "900px",
+      margin: "40px auto",
+      padding: "20px",
+      backgroundColor: "#fff5f0",
+      borderRadius: "12px",
+      boxShadow: "0 6px 12px rgba(0,0,0,0.1)",
+      fontFamily: "Arial, sans-serif",
+    },
+    heading: {
+      textAlign: "center",
+      color: "#ff6f61",
+      marginBottom: "20px",
+      fontSize: "24px",
+      fontWeight: "bold",
+      textDecoration: "underline",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      textAlign: "center",
+    },
+    th: {
+      backgroundColor: "#ff6f61",
+      color: "white",
+      padding: "10px",
+      borderRadius: "6px 6px 0 0",
+    },
+    td: {
+      padding: "10px",
+      borderBottom: "1px solid #ddd",
+    },
+    statusApproved: {
+      color: "white",
+      backgroundColor: "green",
+      borderRadius: "6px",
+      padding: "5px 10px",
+      fontWeight: "bold",
+    },
+    statusRejected: {
+      color: "white",
+      backgroundColor: "red",
+      borderRadius: "6px",
+      padding: "5px 10px",
+      fontWeight: "bold",
+    },
+    statusPending: {
+      color: "white",
+      backgroundColor: "orange",
+      borderRadius: "6px",
+      padding: "5px 10px",
+      fontWeight: "bold",
+    },
+    actionBtn: {
+      padding: "5px 10px",
+      margin: "0 5px",
+      borderRadius: "6px",
+      border: "none",
+      cursor: "pointer",
+      fontWeight: "bold",
+    },
+    acceptBtn: { backgroundColor: "#4CAF50", color: "white" },
+    rejectBtn: { backgroundColor: "#f44336", color: "white" },
+  };
 
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+  return (
+    <div style={styles.container}>
+      <h3 style={styles.heading}>Supervisor Requests</h3>
+      {error && <p style={{ textAlign: "center", color: "red" }}>{error}</p>}
 
       {requests.length === 0 ? (
         <p style={{ textAlign: "center" }}>No requests found.</p>
       ) : (
-        <table className="requests-table">
+        <table style={styles.table}>
           <thead>
             <tr>
-              <th>Request ID</th>
-              <th>Supervisor Name</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th style={styles.th}>Request ID</th>
+              <th style={styles.th}>Supervisor Name</th>
+              <th style={styles.th}>Email</th>
+              <th style={styles.th}>Mobile</th>
+              <th style={styles.th}>Status</th>
+              <th style={styles.th}>Action</th>
             </tr>
           </thead>
           <tbody>
             {requests.map((req) => (
               <tr key={req.id}>
-                <td>{req.id}</td>
-                <td>{req.supervisor.name}</td>
-                <td>{req.supervisor.email}</td>
-                <td>{req.supervisor.mobile}</td>
-                <td
-                  className={
-                    req.status === "APPROVED"
-                      ? "status-approved"
-                      : req.status === "REJECTED"
-                      ? "status-rejected"
-                      : "status-pending"
-                  }
-                >
-                  {req.status}
+                <td style={styles.td}>{req.id}</td>
+                <td style={styles.td}>{req.supervisor.name}</td>
+                <td style={styles.td}>{req.supervisor.email}</td>
+                <td style={styles.td}>{req.supervisor.mobile}</td>
+                <td style={styles.td}>
+                  <span
+                    style={
+                      req.status === "APPROVED"
+                        ? styles.statusApproved
+                        : req.status === "REJECTED"
+                        ? styles.statusRejected
+                        : styles.statusPending
+                    }
+                  >
+                    {req.status}
+                  </span>
                 </td>
-                <td>
+                <td style={styles.td}>
                   {req.status === "PENDING" && (
                     <>
                       <button
-                        className="action-btn accept-btn"
+                        style={{ ...styles.actionBtn, ...styles.acceptBtn }}
                         onClick={() => updateStatus(req.id, "APPROVED")}
                       >
                         Accept
                       </button>
                       <button
-                        className="action-btn reject-btn"
+                        style={{ ...styles.actionBtn, ...styles.rejectBtn }}
                         onClick={() => updateStatus(req.id, "REJECTED")}
                       >
                         Reject

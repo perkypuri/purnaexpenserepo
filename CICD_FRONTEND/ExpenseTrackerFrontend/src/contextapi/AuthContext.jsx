@@ -21,6 +21,14 @@ export function AuthProvider({ children }) {
     localStorage.setItem("isUserLoggedIn", isUserLoggedIn);
   }, [isAdminLoggedIn, isSupervisorLoggedIn, isUserLoggedIn]);
 
+  // ✅ Add logout function
+  const logout = () => {
+    setIsAdminLoggedIn(false);
+    setIsSupervisorLoggedIn(false);
+    setIsUserLoggedIn(false);
+    localStorage.clear(); // clear everything
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -30,6 +38,7 @@ export function AuthProvider({ children }) {
         setIsSupervisorLoggedIn,
         isUserLoggedIn,
         setIsUserLoggedIn,
+        logout, // ✅ expose logout
       }}
     >
       {children}

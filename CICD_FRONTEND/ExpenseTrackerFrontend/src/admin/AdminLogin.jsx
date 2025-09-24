@@ -1,64 +1,113 @@
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contextapi/AuthContext";
-import AdminDashboard from "./AdminDashboard";
-import ViewAllUsers from "./ViewAllUsers";
-import ViewAllSupervisors from "./ViewAllSupervisors";
-import ViewAllRequests from "./ViewRequests";
-import AdminLogin from "./AdminLogin";
-import "./AdminDashboard.css";
 
-export default function AdminNavBar() {
+export default function AdminLogin() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { setIsAdminLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setIsAdminLoggedIn(false);
-    localStorage.removeItem("admin");
-    navigate("/adminlogin"); // programmatic navigation to avoid 404
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:2006/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem("admin", JSON.stringify(data));
+        setIsAdminLoggedIn(true);
+        navigate("/admindashboard");
+      } else {
+        const error = await res.text();
+        alert(error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Backend server not reachable");
+    }
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo">Expense Tracker Admin</div>
-        <ul className="nav-links">
-          <li>
-            <Link to="/admindashboard">Dashboard</Link>
-          </li>
-
-          <li className="dropdown">
-            <span>Manage▾</span>
-            <ul className="dropdown-menu">
-              <li>
-                <Link to="/admin/viewallusers">Users</Link>
-              </li>
-              <li>
-                <Link to="/admin/viewallsupervisors">Supervisors</Link>
-              </li>
-              <li>
-                <Link to="/admin/viewallrequests">Requests</Link>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-      {/* Routes */}
-      <Routes>
-        <Route path="/admindashboard" element={<AdminDashboard />} />
-        <Route path="/admin/viewallusers" element={<ViewAllUsers />} />
-        <Route path="/admin/viewallsupervisors" element={<ViewAllSupervisors />} />
-        <Route path="/admin/viewallrequests" element={<ViewAllRequests />} />
-        <Route path="/adminlogin" element={<AdminLogin />} />
-        <Route path="*" element={<AdminLogin />} /> {/* fallback to login */}
-      </Routes>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#ffe5e3",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <form
+        onSubmit={handleLogin}
+        style={{
+          background: "#FFB1AC",
+          padding: "40px",
+          borderRadius: "15px",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+          width: "350px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <h2 style={{ textAlign: "center", color: "#fff" }}>Admin Login</h2>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#fff" }}>Username:</label>
+          <input
+            type="text"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "none",
+              outline: "none",
+            }}
+          />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ marginBottom: "5px", color: "#fff" }}>Password:</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "none",
+              outline: "none",
+            }}
+          />
+        </div>
+        <button
+          type="submit"
+          style={{
+            padding: "12px",
+            borderRadius: "8px",
+            border: "none",
+            backgroundColor: "#fff",
+            color: "#FFB1AC",
+            fontWeight: "bold",
+            cursor: "pointer",
+            transition: "0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#ffd0cb")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#fff")}
+        >
+          Login
+        </button>
+      </form>
     </div>
   );
 }

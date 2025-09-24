@@ -1,0 +1,30 @@
+.supervisors-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.supervisors-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.supervisors-table th,
+.supervisors-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.supervisors-table th {
+  background-color: #2196f3;
+  color: white;
+}
+
+.supervisors-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.supervisors-table tr:hover {
+  background-color: #ddd;
+}
