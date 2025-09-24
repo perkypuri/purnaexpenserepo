@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supervisorRequests")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("*")
 public class SupervisorRequestController {
 
     private final SupervisorRequestService service;

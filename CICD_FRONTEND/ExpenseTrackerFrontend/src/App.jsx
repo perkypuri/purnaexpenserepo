@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter } from "react-router-dom";
+import MainNavBar from "./main/MainNavBar";
+import AdminNavBar from "./admin/AdminNavBar";
+import UserNavBar from "./user/UserNavBar";
+import SupervisorNavBar from "./supervisor/SupervisorNavBar";
+import { AuthProvider, useAuth } from "./contextapi/AuthContext";
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppContent() {
+  const { isAdminLoggedIn, isUserLoggedIn, isSupervisorLoggedIn } = useAuth();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  if (isAdminLoggedIn) return <AdminNavBar />;
+  if (isSupervisorLoggedIn) return <SupervisorNavBar />;
+  if (isUserLoggedIn) return <UserNavBar />;
+  return <MainNavBar />; // default for not logged in
 }
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+export default App;

@@ -1,0 +1,69 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.User;
+import com.example.demo.model.Supervisor;
+import com.example.demo.model.SupervisorRequest;
+import com.example.demo.service.AdminService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/admin")
+@CrossOrigin("*")
+public class AdminController {
+
+    @Autowired
+    private AdminService adminService;
+
+    // ===== USERS =====
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(adminService.displayAllUsers());
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+        return ResponseEntity.ok(adminService.deleteUser(id));
+    }
+
+    @GetMapping("/users/count")
+    public ResponseEntity<Long> getUserCount() {
+        return ResponseEntity.ok(adminService.displayUserCount());
+    }
+
+    // ===== SUPERVISORS =====
+    @GetMapping("/supervisors")
+    public ResponseEntity<List<Supervisor>> getAllSupervisors() {
+        return ResponseEntity.ok(adminService.displayAllSupervisors());
+    }
+
+    @DeleteMapping("/supervisors/{id}")
+    public ResponseEntity<String> deleteSupervisor(@PathVariable int id) {
+        return ResponseEntity.ok(adminService.deleteSupervisor(id));
+    }
+
+    @GetMapping("/supervisors/count")
+    public ResponseEntity<Long> getSupervisorCount() {
+        return ResponseEntity.ok(adminService.displaySupervisorCount());
+    }
+
+    // ===== REQUESTS =====
+    @GetMapping("/requests")
+    public ResponseEntity<List<SupervisorRequest>> getAllRequests() {
+        return ResponseEntity.ok(adminService.displayAllRequests());
+    }
+
+    @DeleteMapping("/requests/{id}")
+    public ResponseEntity<String> deleteRequest(@PathVariable int id) {
+        return ResponseEntity.ok(adminService.deleteRequest(id));
+    }
+
+    @GetMapping("/requests/count")
+    public ResponseEntity<Long> getRequestCount() {
+        return ResponseEntity.ok(adminService.displayRequestCount());
+    }
+}

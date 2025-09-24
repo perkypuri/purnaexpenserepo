@@ -1,0 +1,238 @@
+/* ========================= */
+/* General Form & Card Styles */
+/* ========================= */
+form {
+  margin: auto;
+  width: 350px;
+  padding: 20px;
+  background: #FFB1AC;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='email'],
+select,
+input[type='date'],
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #FFB1AC;
+  outline: none;
+}
+
+button[type='submit'] {
+  background: linear-gradient(45deg, #FFB1AC, #e69590);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  transition: 0.3s;
+}
+
+button[type='submit']:hover {
+  background: linear-gradient(45deg, #e69590, #d57f7a);
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ffe6e4;
+}
+
+.profile-card {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  text-align: center;
+  border: 3px solid #FFB1AC;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+}
+
+/* ========================= */
+/* Logout Button */
+/* ========================= */
+.logout-btn {
+  background: #FF6B6B;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #e55a5a;
+}
+
+/* ========================= */
+/* Tables & Event Styles */
+/* ========================= */
+.event-container,
+.requests-container {
+  padding: 20px;
+  background: #fff5f4;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-heading,
+.requests-heading {
+  text-align: center;
+  text-decoration: underline;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+.event-table,
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-table th,
+.event-table td,
+.requests-table th,
+.requests-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.event-table thead,
+.requests-table thead {
+  background-color: #FFB1AC;
+  color: #fff;
+}
+
+.requests-table tbody tr:nth-child(even) {
+  background-color: #fff0ef;
+}
+
+.requests-table tbody tr:hover {
+  background-color: #ffe6e4;
+}
+
+/* Status coloring */
+.status-approved {
+  color: green;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+/* Action buttons */
+.action-btn {
+  padding: 6px 12px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  transition: background 0.3s;
+}
+
+.accept-btn {
+  background-color: #4caf50;
+}
+.accept-btn:hover {
+  background-color: #43a047;
+}
+
+.reject-btn {
+  background-color: #e53935;
+}
+.reject-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* ========================= */
+/* Dropdown for Expenses (Clickable) */
+/* ========================= */
+.dropdown {
+  position: relative;
+}
+
+.dropdown span {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #ffe6e4;
+  min-width: 150px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+.dropdown-menu li {
+  padding: 8px 12px;
+}
+
+.dropdown-menu li a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #ffb1ac;
+  color: white;
+}
+
+/* Show dropdown when parent has .show class (controlled by React) */
+.dropdown.show .dropdown-menu {
+  display: block;
+}
+
+/* Optional: smooth hover for desktop */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}

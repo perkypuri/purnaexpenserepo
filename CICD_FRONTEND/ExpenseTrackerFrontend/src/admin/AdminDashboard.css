@@ -1,0 +1,41 @@
+.admin-dashboard {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-dashboard h1 {
+  color: #ff7f50;
+  margin-bottom: 20px;
+}
+
+.card-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background-color: #ff7f50;
+  color: white;
+  text-decoration: none;
+  padding: 30px 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: bold;
+}
