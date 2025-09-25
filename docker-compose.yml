@@ -18,7 +18,7 @@ services:
       retries: 5
 
   backend:
-    image: pravallikamaddineni/docker-backend:latest
+    image: pravallikamaddineni/docker-backend:v2
     container_name: springboot
     ports:
       - "2025:2006"
@@ -30,7 +30,7 @@ services:
       - springboot-mysql-net
 
   frontend:
-    image: pravallikamaddineni/docker-frontend:latest
+    image: pravallikamaddineni/docker-frontend:v2
     container_name: react
     ports:
       - "2020:80"
