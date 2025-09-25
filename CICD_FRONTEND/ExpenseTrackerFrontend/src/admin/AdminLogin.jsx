@@ -7,12 +7,13 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const { setIsAdminLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const baseUrl = `${import.meta.env.VITE_API_URL}/admin`;
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:2006/admin/login", {
+      const res = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

@@ -2,9 +2,9 @@ import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../contextapi/AuthContext";
 import AdminDashboard from "./AdminDashboard";
 import AdminLogin from "./AdminLogin";
-import ViewAllUsers from "./ViewAllUsers"; // import your actual component
-import ViewAllSupervisors from "./ViewAllSupervisors"; // import your actual component
-import ViewAllRequests from "./ViewRequests"; // import your actual component
+import ViewAllUsers from "./ViewAllUsers"; 
+import ViewAllSupervisors from "./ViewAllSupervisors"; 
+import ViewAllRequests from "./ViewRequests"; 
 
 export default function AdminNavBar() {
   const { isAdminLoggedIn, setIsAdminLoggedIn } = useAuth();

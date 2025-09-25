@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import config from '../config';
+
+const API_URL = import.meta.env.VITE_API_URL; // use .env URL
 
 export default function UpdateProfile() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function UpdateProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`${config.url}/users/update`, formData);
+      const response = await axios.put(`${API_URL}/users/update`, formData); // <-- updated URL
       if (response.status === 200) {
         setMessage(response.data);
         setError('');

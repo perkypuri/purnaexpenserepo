@@ -4,6 +4,7 @@ import axios from "axios";
 export default function ViewAllSupervisors() {
   const [supervisors, setSupervisors] = useState([]);
   const [error, setError] = useState("");
+  const baseUrl = `${import.meta.env.VITE_API_URL}/admin`;
 
   useEffect(() => {
     fetchSupervisors();
@@ -11,7 +12,7 @@ export default function ViewAllSupervisors() {
 
   const fetchSupervisors = async () => {
     try {
-      const res = await axios.get("http://localhost:2006/admin/supervisors");
+      const res = await axios.get(`${baseUrl}/supervisors`);
       setSupervisors(res.data);
     } catch (err) {
       console.error("Error fetching supervisors", err);

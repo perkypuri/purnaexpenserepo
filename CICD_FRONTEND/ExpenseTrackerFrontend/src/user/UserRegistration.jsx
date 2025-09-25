@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import config from "../config";
+
+// Use .env variable
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function UserRegistration() {
   const [formData, setFormData] = useState({
@@ -20,7 +22,7 @@ export default function UserRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${config.url}/users/register`, formData);
+      const response = await axios.post(`${API_URL}/users/register`, formData); // <-- updated URL
       if (response.status === 200) {
         setMessage(response.data.message || "Registration successful!");
         setError("");

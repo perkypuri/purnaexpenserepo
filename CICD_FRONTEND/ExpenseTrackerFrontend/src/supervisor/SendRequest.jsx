@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import config from "../config"; // Make sure config has your backend URL
+
+const API_URL = import.meta.env.VITE_API_URL; // URL from .env
 
 export default function SendRequest() {
   const [userId, setUserId] = useState("");
@@ -14,7 +15,7 @@ export default function SendRequest() {
     setSuccess("");
 
     try {
-      await axios.post(`${config.url}/supervisorRequests/send`, {
+      await axios.post(`${API_URL}/supervisorRequests/send`, {
         user: { id: parseInt(userId) },
         supervisor: { id: supervisor.id },
         status: "PENDING",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config"; // Make sure config has your backend URL
+
+const API_URL = import.meta.env.VITE_API_URL; // changed URL
 
 export default function ViewSentRequests() {
   const [requests, setRequests] = useState([]);
@@ -13,7 +14,7 @@ export default function ViewSentRequests() {
 
   const fetchSentRequests = async () => {
     try {
-      const res = await axios.get(`${config.url}/supervisorRequests/supervisor/${supervisor.id}`);
+      const res = await axios.get(`${API_URL}/supervisorRequests/supervisor/${supervisor.id}`);
       setRequests(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Failed to fetch sent requests", err);
@@ -36,24 +37,24 @@ export default function ViewSentRequests() {
     title: {
       textAlign: "center",
       marginBottom: "20px",
-      color: "#ff6f61", // coral
+      color: "#ff6f61",
     },
     table: {
       width: "100%",
       borderCollapse: "collapse",
     },
     th: {
-      backgroundColor: "#ff7f50", // coral
+      backgroundColor: "#ff7f50",
       color: "#fff",
       padding: "12px",
       textAlign: "left",
     },
     td: {
       padding: "10px",
-      borderBottom: "1px solid #ffd1c1", // soft coral line
+      borderBottom: "1px solid #ffd1c1",
     },
     trHover: {
-      backgroundColor: "#ffe4e1", // very soft coral on hover
+      backgroundColor: "#ffe4e1",
     },
     noRequests: {
       textAlign: "center",

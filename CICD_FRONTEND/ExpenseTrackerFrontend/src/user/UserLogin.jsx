@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import config from "../config";
 import { useAuth } from "../contextapi/AuthContext";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function UserLogin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -10,7 +11,8 @@ export default function UserLogin() {
   const navigate = useNavigate();
   const { setIsUserLoggedIn } = useAuth();
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.id]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.id]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,14 +20,13 @@ export default function UserLogin() {
 
     try {
       const response = await axios.post(
-        `${config.url}/users/login`,
+        `${API_URL}/users/login`,
         null,
         { params: { email: formData.email, password: formData.password } }
       );
 
       localStorage.setItem("user", JSON.stringify(response.data));
       setIsUserLoggedIn(true);
-
       navigate("/user/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
@@ -57,7 +58,6 @@ export default function UserLogin() {
         <h3 style={{ color: "#FFB1AC", marginBottom: "25px", textAlign: "center" }}>User Login</h3>
         {error && <p style={{ color: "red", textAlign: "center", marginBottom: "15px" }}>{error}</p>}
 
-        {/* Email field */}
         <div style={{ marginBottom: "20px", display: "flex", flexDirection: "column" }}>
           <label htmlFor="email" style={{ marginBottom: "5px", fontWeight: "600", color: "#333", fontSize: "14px" }}>Email</label>
           <input 
@@ -78,7 +78,6 @@ export default function UserLogin() {
           />
         </div>
 
-        {/* Password field */}
         <div style={{ marginBottom: "20px", display: "flex", flexDirection: "column" }}>
           <label htmlFor="password" style={{ marginBottom: "5px", fontWeight: "600", color: "#333", fontSize: "14px" }}>Password</label>
           <input 

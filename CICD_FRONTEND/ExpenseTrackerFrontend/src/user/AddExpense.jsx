@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import config from "../config";
+
+const API_URL = import.meta.env.VITE_API_URL; // use .env URL
 
 export default function AddExpense() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function AddExpense() {
     };
 
     try {
-      const response = await axios.post(`${config.url}/expenses/add`, payload);
+      const response = await axios.post(`${API_URL}/expenses/add`, payload);
 
       if (response.status === 200) {
         setMessage(response.data);
@@ -123,7 +124,7 @@ export default function AddExpense() {
                 border: "1px solid #FFB1AC",
                 outline: "none",
                 fontSize: "14px",
-                textAlign: "center", // <-- center text here
+                textAlign: "center",
                 transition: "all 0.3s ease",
               }}
             />
@@ -150,7 +151,7 @@ export default function AddExpense() {
               outline: "none",
               fontSize: "14px",
               minHeight: "70px",
-              textAlign: "center", // <-- center text here
+              textAlign: "center",
               transition: "all 0.3s ease",
             }}
           />

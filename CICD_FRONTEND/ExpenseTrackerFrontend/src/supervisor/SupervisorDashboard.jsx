@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config"; // make sure this has your backend URL
 
 export default function SupervisorDashboard() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const supervisor = JSON.parse(localStorage.getItem("supervisor"));
+  const API_URL = import.meta.env.VITE_API_URL; // backend URL from .env
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const res = await axios.get(
-          `${config.url}/supervisorRequests/supervisor/${supervisor.id}`
+          `${API_URL}/supervisorRequests/supervisor/${supervisor.id}`
         );
         setRequests(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
@@ -24,7 +24,7 @@ export default function SupervisorDashboard() {
     };
 
     fetchRequests();
-  }, [supervisor.id]);
+  }, [supervisor.id, API_URL]);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading dashboard...</p>;
 
@@ -62,9 +62,6 @@ export default function SupervisorDashboard() {
       textAlign: "center",
       cursor: "default",
       transition: "transform 0.2s",
-    },
-    cardHover: {
-      transform: "scale(1.05)",
     },
     cardTitle: {
       fontSize: "16px",

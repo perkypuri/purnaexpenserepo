@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../contextapi/AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function SupervisorLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ export default function SupervisorLogin() {
 
     try {
       const res = await axios.post(
-        `http://localhost:2006/supervisors/login`,
+        `${API_URL}/supervisors/login`,
         null,
         { params: { email, password } }
       );

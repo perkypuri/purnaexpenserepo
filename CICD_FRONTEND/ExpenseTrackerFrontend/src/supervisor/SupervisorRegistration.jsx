@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import config from "../config";
+
+const API_URL = import.meta.env.VITE_API_URL; // changed URL
 
 export default function SupervisorRegistration() {
   const [formData, setFormData] = useState({
@@ -20,9 +21,8 @@ export default function SupervisorRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${config.url}/supervisors/register`, formData);
+      const response = await axios.post(`${API_URL}/supervisors/register`, formData);
       if (response.status === 200) {
-        // FIX: backend returns plain string, not {message: "..."}
         setMessage(response.data || "Registration successful!");
         setError("");
         setFormData({

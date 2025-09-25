@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config";
+
+const API_URL = import.meta.env.VITE_API_URL; 
 
 export default function ViewUserExpenses() {
   const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
     const supervisor = JSON.parse(localStorage.getItem("supervisor"));
-    const res = await axios.get(`${config.backendUrl}/supervisorRequests/supervisor/${supervisor.id}`);
+    const res = await axios.get(`${API_URL}/supervisorRequests/supervisor/${supervisor.id}`);
     const accepted = res.data.filter(r => r.status === "ACCEPTED");
     setUsers(accepted.map(r => r.user));
   };

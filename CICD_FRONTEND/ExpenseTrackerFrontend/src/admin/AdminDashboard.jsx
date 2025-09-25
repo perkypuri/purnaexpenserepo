@@ -10,10 +10,10 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const u = await axios.get("/admin/users/count");      // proxied
+        const u = await axios.get("/admin/users/count");     
         setUserCount(u.data ?? 0);
 
-        const s = await axios.get("/admin/supervisors/count"); // proxied
+        const s = await axios.get("/admin/supervisors/count"); 
         setSupervisorCount(s.data ?? 0);
       } catch (err) {
         console.error("Error fetching counts", err);

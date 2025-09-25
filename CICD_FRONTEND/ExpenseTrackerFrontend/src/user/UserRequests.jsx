@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config";
+
+const API_URL = import.meta.env.VITE_API_URL; // use .env
 
 export default function UserRequests() {
   const [requests, setRequests] = useState([]);
@@ -15,7 +16,7 @@ export default function UserRequests() {
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
-        `${config.url}/supervisorRequests/user/${user.id}`
+        `${API_URL}/supervisorRequests/user/${user.id}`
       );
       setRequests(response.data || []);
       setError("");
@@ -27,7 +28,7 @@ export default function UserRequests() {
   const updateStatus = async (requestId, status) => {
     try {
       await axios.put(
-        `${config.url}/supervisorRequests/updateStatus/${requestId}`,
+        `${API_URL}/supervisorRequests/updateStatus/${requestId}`,
         null,
         { params: { status } }
       );

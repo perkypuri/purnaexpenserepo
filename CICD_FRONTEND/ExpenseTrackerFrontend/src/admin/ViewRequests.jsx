@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config"; // make sure this points to your backend URL
 
 export default function ViewRequests() {
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState("");
 
+  const baseUrl = `${import.meta.env.VITE_API_URL}/admin`;
+
   // Fetch all supervisor requests
   const fetchRequests = async () => {
     try {
-      const response = await axios.get(`${config.backendUrl}/admin/requests`);
+      const response = await axios.get(`${baseUrl}/requests`);
       setRequests(response.data);
       setError(""); // clear previous errors
     } catch (err) {
@@ -49,11 +50,10 @@ export default function ViewRequests() {
                 <td>{req.supervisor?.name || "N/A"}</td>
                 <td>{req.status}</td>
                 <td>
-                  {/* Example: Delete request button */}
                   <button
                     onClick={async () => {
                       try {
-                        await axios.delete(`${config.backendUrl}/admin/requests?id=${req.id}`);
+                        await axios.delete(`${baseUrl}/requests?id=${req.id}`);
                         fetchRequests(); // refresh after delete
                       } catch (err) {
                         console.error("Failed to delete request", err);
