@@ -18,9 +18,6 @@ services:
       retries: 5
 
   backend:
-    build:
-      context: ./CICD_BACKEND/ExpenseTrackerBackend
-      dockerfile: backend.Dockerfile
     image: pravallikamaddineni/docker-backend:latest
     container_name: springboot
     ports:
@@ -33,9 +30,6 @@ services:
       - springboot-mysql-net
 
   frontend:
-    build:
-      context: ./CICD_FRONTEND/ExpenseTrackerFrontend
-      dockerfile: frontend.Dockerfile
     image: pravallikamaddineni/docker-frontend:latest
     container_name: react
     ports:
