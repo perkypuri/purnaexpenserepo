@@ -33,7 +33,7 @@ services:
     image: pravallikamaddineni/docker-frontend:latest
     container_name: react
     ports:
-      - "3000:80"
+      - "2020:80"
     depends_on:
       - backend
     restart: on-failure
